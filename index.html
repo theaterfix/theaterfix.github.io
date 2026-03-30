@@ -1,69 +1,687 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Theater Fix</title>
-    <link rel="stylesheet" href="styles.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Theater Fix</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=DM+Mono:ital,wght@0,300;0,400;1,300&family=Cormorant+Garamond:ital,wght@0,300;0,600;1,300;1,600&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --cream: #F5EFE0;
+    --cream-dark: #E8DEC8;
+    --ink: #1A1108;
+    --burgundy: #6B1A2A;
+    --gold: #C9922A;
+    --gold-light: #E8B84B;
+    --rose: #C2566A;
+    --muted: #7A6A55;
+    --rule: #C9922A;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background-color: var(--cream);
+    color: var(--ink);
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-size: 18px;
+    line-height: 1.6;
+    min-height: 100vh;
+    overflow-x: hidden;
+    background-image:
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='400'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='400' height='400' filter='url(%23n)' opacity='0.045'/%3E%3C/svg%3E");
+  }
+
+  /* ── HEADER ── */
+  .site-header {
+    border-bottom: 1px solid var(--gold);
+    padding: 0 clamp(1.5rem, 5vw, 5rem);
+    position: relative;
+  }
+
+  .header-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1.25rem 0 0.5rem;
+    border-bottom: 0.5px solid var(--cream-dark);
+  }
+
+  .header-meta {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  .site-title-block {
+    text-align: center;
+    padding: 1.5rem 0 1rem;
+    position: relative;
+  }
+
+  .ornament {
+    font-size: 1rem;
+    color: var(--gold);
+    letter-spacing: 0.4em;
+    display: block;
+    margin-bottom: 0.25rem;
+  }
+
+  .site-title {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: clamp(3.5rem, 9vw, 7rem);
+    font-weight: 900;
+    line-height: 0.9;
+    letter-spacing: -0.02em;
+    color: var(--ink);
+  }
+
+  .site-title em {
+    font-style: italic;
+    color: var(--burgundy);
+  }
+
+  .site-tagline {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-top: 0.5rem;
+  }
+
+  .header-nav {
+    display: flex;
+    justify-content: center;
+    gap: 0;
+    border-top: 1px solid var(--gold);
+    margin-top: 0.75rem;
+  }
+
+  .header-nav a {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--muted);
+    text-decoration: none;
+    padding: 0.6rem 1.5rem;
+    border-right: 0.5px solid var(--cream-dark);
+    transition: color 0.2s, background 0.2s;
+  }
+  .header-nav a:first-child { border-left: 0.5px solid var(--cream-dark); }
+  .header-nav a:hover { color: var(--burgundy); background: rgba(107,26,42,0.05); }
+
+  /* ── MAIN LAYOUT ── */
+  .page-layout {
+    display: grid;
+    grid-template-columns: 1fr clamp(220px, 28vw, 320px);
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 0 clamp(1.5rem, 5vw, 5rem);
+    gap: 4rem;
+    align-items: start;
+  }
+
+  /* ── SECTION LABELS ── */
+  .section-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.62rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 0.75rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+  .section-label::after {
+    content: '';
+    flex: 1;
+    height: 0.5px;
+    background: var(--gold);
+    opacity: 0.4;
+  }
+
+  /* ── BANNER WEEK LABEL ── */
+  .week-banner {
+    padding: 2.5rem 0 0;
+    margin-bottom: 2rem;
+  }
+
+  .week-eyebrow {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 0.25rem;
+  }
+
+  .week-heading {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.8rem, 4vw, 2.8rem);
+    font-weight: 700;
+    font-style: italic;
+    color: var(--ink);
+    line-height: 1.1;
+  }
+
+  .week-rule {
+    height: 2px;
+    background: linear-gradient(90deg, var(--burgundy), transparent);
+    margin: 1rem 0;
+    border: none;
+  }
+
+  /* ── SHOW CARDS ── */
+  .shows-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .show-card {
+    display: grid;
+    grid-template-columns: 2.5rem 1fr;
+    gap: 0 1.25rem;
+    padding: 1.5rem 0;
+    border-bottom: 0.5px solid var(--cream-dark);
+    text-decoration: none;
+    color: inherit;
+    transition: background 0.2s;
+    position: relative;
+    align-items: start;
+    cursor: pointer;
+  }
+
+  .show-card:first-child { border-top: 0.5px solid var(--cream-dark); }
+  .show-card:hover { background: rgba(201,146,42,0.05); }
+  .show-card:hover .show-number { color: var(--burgundy); }
+
+  .show-number {
+    font-family: 'Playfair Display', serif;
+    font-size: 2rem;
+    font-weight: 900;
+    color: var(--cream-dark);
+    line-height: 1;
+    transition: color 0.2s;
+    padding-top: 0.1rem;
+    text-align: right;
+  }
+
+  .show-content { flex: 1; }
+
+  .show-tags {
+    display: flex;
+    gap: 0.4rem;
+    flex-wrap: wrap;
+    margin-bottom: 0.3rem;
+  }
+
+  .tag {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.58rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding: 0.15rem 0.5rem;
+    border: 0.5px solid currentColor;
+    border-radius: 1px;
+  }
+
+  .tag-genre { color: var(--muted); }
+  .tag-hot { color: var(--rose); }
+  .tag-new { color: var(--gold); }
+
+  .show-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.3rem, 2.5vw, 1.7rem);
+    font-weight: 700;
+    line-height: 1.1;
+    color: var(--ink);
+    margin-bottom: 0.2rem;
+  }
+
+  .show-subtitle {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 0.95rem;
+    font-style: italic;
+    color: var(--muted);
+    margin-bottom: 0.6rem;
+  }
+
+  .show-blurb {
+    font-size: 1rem;
+    color: var(--ink);
+    line-height: 1.55;
+    max-width: 60ch;
+    margin-bottom: 0.6rem;
+  }
+
+  .show-meta-row {
+    display: flex;
+    gap: 1.25rem;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+
+  .show-meta-item {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.62rem;
+    letter-spacing: 0.1em;
+    color: var(--muted);
+  }
+
+  .show-rating {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+  }
+
+  .star { color: var(--gold); font-size: 0.75rem; }
+  .star-empty { color: var(--cream-dark); }
+
+  /* ── SIDEBAR ── */
+  .sidebar {
+    padding-top: 2.5rem;
+    position: sticky;
+    top: 2rem;
+  }
+
+  .sidebar-section {
+    margin-bottom: 2.5rem;
+  }
+
+  .sidebar-box {
+    border: 0.5px solid var(--cream-dark);
+    padding: 1.25rem;
+    background: rgba(255,255,255,0.3);
+  }
+
+  .sidebar-box h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.1rem;
+    font-style: italic;
+    margin-bottom: 0.75rem;
+    color: var(--ink);
+  }
+
+  .quote-block {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.1rem;
+    font-style: italic;
+    line-height: 1.5;
+    color: var(--ink);
+    border-left: 2px solid var(--gold);
+    padding-left: 1rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .quote-attr {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.6rem;
+    letter-spacing: 0.1em;
+    color: var(--muted);
+    text-transform: uppercase;
+  }
+
+  .archive-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .archive-list li {
+    border-bottom: 0.5px solid var(--cream-dark);
+    padding: 0.5rem 0;
+    font-size: 0.9rem;
+  }
+
+  .archive-list li:last-child { border-bottom: none; }
+
+  .archive-list a {
+    color: var(--ink);
+    text-decoration: none;
+    font-style: italic;
+  }
+  .archive-list a:hover { color: var(--burgundy); }
+
+  .archive-week {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.58rem;
+    letter-spacing: 0.1em;
+    color: var(--muted);
+    text-transform: uppercase;
+    display: block;
+    margin-bottom: 0.1rem;
+  }
+
+  .about-text {
+    font-size: 0.95rem;
+    color: var(--muted);
+    line-height: 1.6;
+    margin-bottom: 1rem;
+  }
+
+  .cta-link {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--burgundy);
+    text-decoration: none;
+    border-bottom: 1px solid var(--rose);
+    padding-bottom: 1px;
+  }
+
+  /* ── HORIZONTAL DIVIDER ORNAMENT ── */
+  .divider-ornament {
+    text-align: center;
+    color: var(--gold);
+    letter-spacing: 0.5em;
+    font-size: 0.75rem;
+    margin: 1rem 0;
+  }
+
+  /* ── FOOTER ── */
+  .site-footer {
+    border-top: 1px solid var(--gold);
+    margin-top: 4rem;
+    padding: 2rem clamp(1.5rem, 5vw, 5rem);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+
+  .footer-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.4rem;
+    font-style: italic;
+    color: var(--ink);
+  }
+
+  .footer-copy {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.6rem;
+    letter-spacing: 0.1em;
+    color: var(--muted);
+    text-transform: uppercase;
+  }
+
+  /* ── ANIMATIONS ── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(16px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .show-card { animation: fadeUp 0.4s ease both; }
+  .show-card:nth-child(1) { animation-delay: 0.05s; }
+  .show-card:nth-child(2) { animation-delay: 0.12s; }
+  .show-card:nth-child(3) { animation-delay: 0.19s; }
+  .show-card:nth-child(4) { animation-delay: 0.26s; }
+  .show-card:nth-child(5) { animation-delay: 0.33s; }
+  .show-card:nth-child(6) { animation-delay: 0.40s; }
+
+  .site-header { animation: fadeUp 0.35s ease both; }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 860px) {
+    .page-layout {
+      grid-template-columns: 1fr;
+      gap: 2rem;
+    }
+    .sidebar { position: static; padding-top: 0; }
+    .header-nav a { padding: 0.6rem 0.9rem; }
+  }
+
+  @media (max-width: 540px) {
+    .header-nav { flex-wrap: wrap; }
+    .site-title { font-size: 3rem; }
+  }
+</style>
 </head>
 <body>
 
-<header>
-    <h1>Theater Fix 🎭</h1>
-    <p>Broadway, Reviews & Rankings</p>
+<header class="site-header">
+  <div class="header-top">
+    <span class="header-meta">Est. NYC</span>
+    <span class="header-meta">Week of March 30, 2026</span>
+    <span class="header-meta"><a href="mailto:your@email.com" style="color:inherit;text-decoration:none;">Contact</a></span>
+  </div>
+
+  <div class="site-title-block">
+    <span class="ornament">✦ ✦ ✦</span>
+    <h1 class="site-title">Theater<em>Fix</em></h1>
+    <p class="site-tagline">Broadway · Off-Broadway · Opinions</p>
+  </div>
+
+  <nav class="header-nav">
+    <a href="#">This Week</a>
+    <a href="#">Rankings</a>
+    <a href="#">Archive</a>
+    <a href="#">About</a>
+  </nav>
 </header>
 
-<main>
+<div class="page-layout">
 
-    <!-- CENTER IMAGE -->
-    <div class="hero">
-        <img src="playbill.png" alt="Playbill Cover">
+  <!-- MAIN COLUMN -->
+  <main>
+    <div class="week-banner">
+      <p class="week-eyebrow">Weekly Picks — March 30, 2026</p>
+      <h2 class="week-heading">Six Shows Worth<br>Your Saturday Night</h2>
+      <hr class="week-rule">
     </div>
 
-    <!-- BUTTONS -->
-    <div class="buttons">
-        <a href="mailto:your@email.com" class="btn">📧 Email</a>
-        <a href="#" class="btn">⭐ Follow</a>
+    <div class="shows-list">
+
+      <!-- ROCKY HORROR -->
+      <article class="show-card">
+        <div class="show-number">01</div>
+        <div class="show-content">
+          <div class="show-tags">
+            <span class="tag tag-genre">Musical</span>
+            <span class="tag tag-hot">Staff Pick</span>
+          </div>
+          <h3 class="show-title">The Rocky Horror Show</h3>
+          <p class="show-subtitle">Revival · Cult Classic · Interactive</p>
+          <p class="show-blurb">An absolute blast and genuinely the most fun you can have in a darkened room with strangers. Bring a bag of rice. Wear something weird. Leave your dignity at the door — you'll want to.</p>
+          <div class="show-meta-row">
+            <span class="show-meta-item">🗓 Running Now</span>
+            <span class="show-meta-item">⏱ 2h no intermission</span>
+            <span class="show-rating">
+              <span class="star">★★★★★</span>
+            </span>
+          </div>
+        </div>
+      </article>
+
+      <!-- TITUS ANDRONICUS -->
+      <article class="show-card">
+        <div class="show-number">02</div>
+        <div class="show-content">
+          <div class="show-tags">
+            <span class="tag tag-genre">Shakespeare</span>
+            <span class="tag tag-hot">Intense</span>
+          </div>
+          <h3 class="show-title">Titus Andronicus</h3>
+          <p class="show-subtitle">Classic · Bloody · Essential</p>
+          <p class="show-blurb">Shakespeare's most deranged bloodbath — and somehow one of his most riveting. The current production commits fully and doesn't look away. Not for the faint-hearted, but deeply worth it.</p>
+          <div class="show-meta-row">
+            <span class="show-meta-item">🗓 Running Now</span>
+            <span class="show-meta-item">⏱ 3h with intermission</span>
+            <span class="show-rating">
+              <span class="star">★★★★</span><span class="star star-empty">★</span>
+            </span>
+          </div>
+        </div>
+      </article>
+
+      <!-- SPELLING BEE -->
+      <article class="show-card">
+        <div class="show-number">03</div>
+        <div class="show-content">
+          <div class="show-tags">
+            <span class="tag tag-genre">Musical</span>
+            <span class="tag tag-new">Charming</span>
+          </div>
+          <h3 class="show-title">The 25th Annual Putnam County Spelling Bee</h3>
+          <p class="show-subtitle">Comedy · Musical · Audience Participation</p>
+          <p class="show-blurb">Absolutely disarming. Pulls you in laughing and then — without warning — punches you right in the chest. The audience participation section alone is worth the ticket price.</p>
+          <div class="show-meta-row">
+            <span class="show-meta-item">🗓 Running Now</span>
+            <span class="show-meta-item">⏱ 1h 45m</span>
+            <span class="show-rating">
+              <span class="star">★★★★★</span>
+            </span>
+          </div>
+        </div>
+      </article>
+
+      <!-- HEATHERS -->
+      <article class="show-card">
+        <div class="show-number">04</div>
+        <div class="show-content">
+          <div class="show-tags">
+            <span class="tag tag-genre">Musical</span>
+            <span class="tag tag-hot">Dark Comedy</span>
+          </div>
+          <h3 class="show-title">Heathers The Musical</h3>
+          <p class="show-subtitle">Cult · Teen Angst · Gloriously Unhinged</p>
+          <p class="show-blurb">How very. The songs are catchier than they have any right to be, the staging is bold, and the whole thing swings between hilarious and genuinely unsettling in the best possible way.</p>
+          <div class="show-meta-row">
+            <span class="show-meta-item">🗓 Running Now</span>
+            <span class="show-meta-item">⏱ 2h 15m</span>
+            <span class="show-rating">
+              <span class="star">★★★★</span><span class="star star-empty">★</span>
+            </span>
+          </div>
+        </div>
+      </article>
+
+      <!-- EVERY BRILLIANT THING -->
+      <article class="show-card">
+        <div class="show-number">05</div>
+        <div class="show-content">
+          <div class="show-tags">
+            <span class="tag tag-genre">Solo Show</span>
+            <span class="tag tag-new">Essential</span>
+          </div>
+          <h3 class="show-title">Every Brilliant Thing</h3>
+          <p class="show-subtitle">Drama · Intimate · Life-Changing</p>
+          <p class="show-blurb">One performer. The entire audience. A list of everything worth living for. You will laugh more than you expect, cry more than you're prepared for, and leave utterly changed. Go alone. Or don't.</p>
+          <div class="show-meta-row">
+            <span class="show-meta-item">🗓 Running Now</span>
+            <span class="show-meta-item">⏱ 70 min no intermission</span>
+            <span class="show-rating">
+              <span class="star">★★★★★</span>
+            </span>
+          </div>
+        </div>
+      </article>
+
+      <!-- CATS: JELLICLE BALL -->
+      <article class="show-card">
+        <div class="show-number">06</div>
+        <div class="show-content">
+          <div class="show-tags">
+            <span class="tag tag-genre">Musical</span>
+            <span class="tag tag-hot">Spectacle</span>
+            <span class="tag tag-new">Hot Ticket</span>
+          </div>
+          <h3 class="show-title">Cats: The Jellicle Ball</h3>
+          <p class="show-subtitle">Reimagined · Voguing · Extraordinary</p>
+          <p class="show-blurb">The revival nobody asked for but absolutely everyone needs. Ballroom culture meets Lloyd Webber in a fever dream that somehow makes Cats make sense for the first time. Revelatory.</p>
+          <div class="show-meta-row">
+            <span class="show-meta-item">🗓 Running Now</span>
+            <span class="show-meta-item">⏱ 2h 30m</span>
+            <span class="show-rating">
+              <span class="star">★★★★★</span>
+            </span>
+          </div>
+        </div>
+      </article>
+
+    </div><!-- /shows-list -->
+  </main>
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+
+    <div class="sidebar-section">
+      <div class="section-label">This week</div>
+      <div class="sidebar-box">
+        <div class="quote-block">
+          "The theatre is the only institution in the world which has been dying for four thousand years and has never succumbed."
+        </div>
+        <p class="quote-attr">— Thornton Wilder</p>
+      </div>
     </div>
 
-    <!-- LIST SECTIONS -->
-    <section>
-        <h2>🎟️ Current Broadway Rankings</h2>
-        <ul>
-            <li>1. Show Name</li>
-            <li>2. Show Name</li>
-            <li>3. Show Name</li>
-        </ul>
-    </section>
+    <div class="sidebar-section">
+      <div class="section-label">From the Archive</div>
+      <ul class="archive-list">
+        <li>
+          <span class="archive-week">Mar 23</span>
+          <a href="#">Hadestown, Suffs, Wicked</a>
+        </li>
+        <li>
+          <span class="archive-week">Mar 16</span>
+          <a href="#">Into the Woods, Company</a>
+        </li>
+        <li>
+          <span class="archive-week">Mar 9</span>
+          <a href="#">Hamilton, The Notebook</a>
+        </li>
+        <li>
+          <span class="archive-week">Mar 2</span>
+          <a href="#">Sweeney Todd Revival</a>
+        </li>
+      </ul>
+    </div>
 
-    <section>
-        <h2>📚 From the Archive</h2>
-        <ul>
-            <li>Classic Show 1</li>
-            <li>Classic Show 2</li>
-        </ul>
-    </section>
+    <div class="sidebar-section">
+      <div class="section-label">About</div>
+      <div class="sidebar-box">
+        <p class="about-text">Informal dispatches from someone who spends too much money on theater tickets and not enough on rent. New picks every Sunday.</p>
+        <a href="mailto:your@email.com" class="cta-link">Get in touch →</a>
+      </div>
+    </div>
 
-    <section>
-        <h2>🔥 Most Anticipated</h2>
-        <ul>
-            <li>Upcoming Show 1</li>
-            <li>Upcoming Show 2</li>
-        </ul>
-    </section>
+    <div class="sidebar-section">
+      <div class="section-label">Most Anticipated</div>
+      <ul class="archive-list">
+        <li>
+          <span class="archive-week">Coming Soon</span>
+          <a href="#">Suffs (Transfer)</a>
+        </li>
+        <li>
+          <span class="archive-week">Coming Soon</span>
+          <a href="#">New Lloyd Webber</a>
+        </li>
+        <li>
+          <span class="archive-week">Touring</span>
+          <a href="#">Six The Musical</a>
+        </li>
+      </ul>
+    </div>
 
-    <section>
-        <h2>🌍 Other (Off-Broadway, London, etc.)</h2>
-        <ul>
-            <li>Off-Broadway Show</li>
-            <li>West End Show</li>
-        </ul>
-    </section>
+  </aside>
+</div>
 
-</main>
-
-<footer>
-    <p>© 2026 Theater Fix</p>
+<footer class="site-footer">
+  <span class="footer-title">Theater<em style="font-family:'Playfair Display',serif;font-style:italic;color:var(--burgundy)">Fix</em></span>
+  <div class="divider-ornament">✦</div>
+  <span class="footer-copy">© 2026 · Broadway, Off-Broadway & Opinions · NYC</span>
 </footer>
 
 </body>
